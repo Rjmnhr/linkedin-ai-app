@@ -251,7 +251,7 @@ function AIModelComponent() {
     }
 
     axios
-      .post("http://2ndstorey.com:8002/api/ai/run-model", formData, {
+      .post("https://backend.2ndstorey.com/api/ai/run-model", formData, {
         headers: {
           "Content-Type": "application/json",
         },
