@@ -100,6 +100,54 @@ function AIModelComponent() {
               onChange={(e) => handlePreviousJobChange(i, e)}
             />
           </div>
+          <div className="mb-3 col-12 text-start">
+            <label htmlFor={`duration-${i}`} className="form-label">
+              Duration in months
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id={`duration-${i}`}
+              name={`duration`}
+              onChange={(e) => handlePreviousJobChange(i, e)}
+            />
+          </div>
+          <div className="mb-3 col-12 text-start">
+            <label htmlFor={`job_location-${i}`} className="form-label">
+              Job location
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id={`job_location-${i}`}
+              name={`job_location`}
+              onChange={(e) => handlePreviousJobChange(i, e)}
+            />
+          </div>
+          <div className="mb-3 col-12 text-start">
+            <label htmlFor={`emp_count-${i}`} className="form-label">
+              Employee count
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id={`emp_count-${i}`}
+              name={`emp_count`}
+              onChange={(e) => handlePreviousJobChange(i, e)}
+            />
+          </div>
+          <div className="mb-3 col-12 text-start">
+            <label htmlFor={`industry-${i}`} className="form-label">
+              Industry
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id={`industry-${i}`}
+              name={`industry`}
+              onChange={(e) => handlePreviousJobChange(i, e)}
+            />
+          </div>
           {/* Other input fields */}
         </div>
       );
@@ -122,6 +170,30 @@ function AIModelComponent() {
               className="form-control"
               id={`institute-${i}`}
               name={`institute`}
+              onChange={(e) => handleEducationEntryChange(i, e)}
+            />
+          </div>
+          <div className="mb-3 col-12 text-start">
+            <label htmlFor={`degree-${i}`} className="form-label">
+              Degree
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id={`degree-${i}`}
+              name={`degree`}
+              onChange={(e) => handleEducationEntryChange(i, e)}
+            />
+          </div>
+          <div className="mb-3 col-12 text-start">
+            <label htmlFor={`degree_duration-${i}`} className="form-label">
+              Degree Duration
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id={`degree_duration-${i}`}
+              name={`degree_duration`}
               onChange={(e) => handleEducationEntryChange(i, e)}
             />
           </div>
@@ -238,16 +310,20 @@ function AIModelComponent() {
     for (let i = 0; i < previousJobs.length; i++) {
       formData.append(`org_${i + 1}`, previousJobs[i].organization);
       formData.append(`title_${i + 1}`, previousJobs[i].title);
-
-      // formData[`job_${i + 1}_duration_1`] = previousJobs[i].duration;
-      // formData[`job_${i + 1}_location`] = previousJobs[i].location;
+      formData.append(`job_${i + 1}_duration`, previousJobs[i].duration);
+      formData.append(`job_${i + 1}_location`, previousJobs[i].job_location);
+      formData.append(`company_${i + 1}_emp_count`, previousJobs[i].emp_count);
+      formData.append(`company_${i + 1}_industry`, previousJobs[i].industry);
     }
 
     // Process education entries
     for (let i = 0; i < educationEntries.length; i++) {
       formData.append(`institute_${i + 1}`, educationEntries[i].institute);
-      // formData[`degree_${i + 1}`] = educationEntries[i].degree;
-      // formData[`degree_${i + 1}_duration`] = educationEntries[i].duration;
+      formData.append(`degree_${i + 1}`, educationEntries[i].degree);
+      formData.append(
+        `degree_${i + 1}_duration`,
+        educationEntries[i].degree_duration
+      );
     }
 
     axios
@@ -261,8 +337,10 @@ function AIModelComponent() {
 
         const stringData = data.output;
         const cleanedStringData = stringData.replace(/NaN/g, "null");
+        console.log(cleanedStringData);
         const parsedData = JSON.parse(cleanedStringData);
-        setDataResults(parsedData);
+        const stored = await setDataResults(parsedData);
+        console.log(stored);
         setIsLoading(false);
         navigate("/results");
       })

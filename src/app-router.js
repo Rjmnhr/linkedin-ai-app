@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/home-page";
 import AIModelComponent from "./pages/AI-Model";
 import ResultsPage from "./pages/results-page";
+import CareerFlowChart from "./flow-chart";
 
 const AppRouter = () => {
   return (
@@ -34,6 +35,16 @@ const AppRouter = () => {
               <>
                 <div>
                   <ResultsPage />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/flow-chart"
+            element={
+              <>
+                <div>
+                  <CareerFlowChart />
                 </div>
               </>
             }
