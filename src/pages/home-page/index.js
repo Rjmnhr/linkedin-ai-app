@@ -37,7 +37,7 @@ const HomePage = () => {
           </div>
 
           <div className="w-lg-65 mx-lg-auto">
-            <form>
+            {/* <form>
               <div className="input-card input-card-sm">
                 <div className="input-card-form">
                   <input
@@ -63,15 +63,16 @@ const HomePage = () => {
                     aria-label="Your email"
                   />
                 </div>
-                <button
-                  type="button"
-                  className="btn btn-primary btn-lg"
-                  onClick={handleNavigate}
-                >
-                  Get started
-                </button>
+               
               </div>
-            </form>
+            </form> */}
+            <button
+              type="button"
+              className="btn btn-primary btn-lg w-50"
+              onClick={handleNavigate}
+            >
+              Get started
+            </button>
           </div>
         </div>
       </div>

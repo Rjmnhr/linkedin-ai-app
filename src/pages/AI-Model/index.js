@@ -3,16 +3,22 @@ import React, { useState } from "react";
 import { useApplicationContext } from "../../app-context";
 import { useNavigate } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons/lib/icons";
+import SimplePieChart from "../../components/pie-charts/progress-chart";
+import "./style.css";
+// import ProfileBarChart from "../../components/pie-charts/bar-chart";
+import { PGDegree, UGDegree } from "../../list-of-degrees/list-of-degree";
+import { Progress } from "antd";
 
 function AIModelComponent() {
   const [section, setSection] = useState(1);
-  const [numPreviousJobs, setNumPreviousJobs] = useState(0);
-  const [numEducationEntries, setNumEducationEntries] = useState(0);
+  const [numPreviousJobs, setNumPreviousJobs] = useState(1);
+  const [numEducationEntries, setNumEducationEntries] = useState(2);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [previousJobs, setPreviousJobs] = useState([]);
   const [educationEntries, setEducationEntries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  // const [matchPercentage, setMatchPercentage] = useState(48);
 
   const { setDataResults } = useApplicationContext();
   const navigate = useNavigate();
@@ -75,80 +81,123 @@ function AIModelComponent() {
       // Render input fields for the first two previous jobs
       previousJobSections.push(
         <div key={i}>
-          <h4>Previous Job {i + 1}</h4>
+          {/* <h4>Previous Job {i + 1}</h4> */}
           <div className="mb-3 col-12 text-start">
-            <label htmlFor={`organization-${i}`} className="form-label">
-              Organization
-            </label>
+            <select
+              type="text"
+              className="form-control"
+              style={{ padding: "5px 27px", color: "#51596c" }}
+              id={`experience-${i}`}
+              name={`experience`}
+              placeholder="Experience"
+            >
+              <option>Experience</option>
+              <option value="fresher">Fresher</option>
+              <option value="1">1 year</option>
+              <option value="2">2 years</option>
+              <option value="3">3 years</option>
+              <option value="3">More than 3 years</option>
+              <option value="3">More than 5 years</option>
+              <option value="3">More than 10 years</option>
+            </select>
+          </div>
+          <div className="mb-3 col-12 text-start">
             <input
               type="text"
               className="form-control"
               id={`organization-${i}`}
               name={`organization`}
               onChange={(e) => handlePreviousJobChange(i, e)}
+              placeholder="organization"
             />
           </div>
           <div className="mb-3 col-12 text-start">
-            <label htmlFor={`title-${i}`} className="form-label">
-              Title
-            </label>
             <input
               type="text"
               className="form-control"
               id={`title-${i}`}
               name={`title`}
               onChange={(e) => handlePreviousJobChange(i, e)}
+              placeholder="Title"
             />
           </div>
           <div className="mb-3 col-12 text-start">
-            <label htmlFor={`duration-${i}`} className="form-label">
-              Duration in months
-            </label>
             <input
               type="text"
               className="form-control"
               id={`duration-${i}`}
               name={`duration`}
-              onChange={(e) => handlePreviousJobChange(i, e)}
+              // onChange={(e) => handlePreviousJobChange(i, e)}
+              placeholder="Duration in months"
             />
           </div>
           <div className="mb-3 col-12 text-start">
-            <label htmlFor={`job_location-${i}`} className="form-label">
-              Job location
-            </label>
             <input
               type="text"
               className="form-control"
               id={`job_location-${i}`}
               name={`job_location`}
-              onChange={(e) => handlePreviousJobChange(i, e)}
+              // onChange={(e) => handlePreviousJobChange(i, e)}
+              placeholder="Job location"
             />
           </div>
-          <div className="mb-3 col-12 text-start">
-            <label htmlFor={`emp_count-${i}`} className="form-label">
-              Employee count
-            </label>
+          {/* <div className="mb-3 col-12 text-start">
             <input
               type="text"
               className="form-control"
               id={`emp_count-${i}`}
               name={`emp_count`}
               onChange={(e) => handlePreviousJobChange(i, e)}
+              placeholder="Employee count"
             />
           </div>
           <div className="mb-3 col-12 text-start">
-            <label htmlFor={`industry-${i}`} className="form-label">
-              Industry
-            </label>
             <input
               type="text"
               className="form-control"
               id={`industry-${i}`}
               name={`industry`}
               onChange={(e) => handlePreviousJobChange(i, e)}
+              placeholder="Industry"
             />
+          </div> */}
+          <div className="mb-3 col-12 text-start">
+            <select
+              id="companySize"
+              name="companySize"
+              className="form-control"
+              style={{ padding: "5px 27px", color: "#51596c" }}
+            >
+              <option>Company size</option>
+              <option value="freelancer">Freelancer / Solo Entrepreneur</option>
+              <option value="micro">Micro (1-9 employees)</option>
+              <option value="small">Small (10-49 employees)</option>
+              <option value="medium">Medium (50-249 employees)</option>
+              <option value="large">Large (250+ employees)</option>
+            </select>
           </div>
-          {/* Other input fields */}
+          <div className="mb-3 col-12 text-start">
+            <select
+              id="industrySector"
+              name="industrySector"
+              className="form-control"
+              style={{ padding: "5px 27px", color: "#51596c" }}
+            >
+              <option>Industry/Sector</option>
+              <option value="it">Information Technology</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="finance">Finance and Banking</option>
+              <option value="manufacturing">Manufacturing</option>
+              <option value="retail">Retail</option>
+              <option value="education">Education</option>
+              <option value="hospitality">Hospitality and Tourism</option>
+              <option value="energy">Energy and Utilities</option>
+              <option value="media">Media and Entertainment</option>
+              <option value="nonprofit">Non-profit / NGO</option>
+              <option value="government">Government</option>
+              <option value="other">Other (Specify)</option>
+            </select>
+          </div>
         </div>
       );
     }
@@ -157,44 +206,57 @@ function AIModelComponent() {
 
   const renderEducationSection = () => {
     const educationSections = [];
+
     for (let i = 0; i < numEducationEntries; i++) {
       educationSections.push(
         <div key={i}>
-          <h4>Education Entry {i + 1}</h4>
+          <h4>
+            {i === 0 ? "Under Graduation details " : "Post Graduation details"}
+          </h4>
           <div className="mb-3 col-12 text-start">
-            <label htmlFor={`institute-${i}`} className="form-label">
+            {/* <label htmlFor={`institute-${i}`} className="form-label">
               Institute
-            </label>
+            </label> */}
             <input
               type="text"
               className="form-control"
               id={`institute-${i}`}
               name={`institute`}
               onChange={(e) => handleEducationEntryChange(i, e)}
+              placeholder="Institute"
             />
           </div>
-          <div className="mb-3 col-12 text-start">
-            <label htmlFor={`degree-${i}`} className="form-label">
-              Degree
-            </label>
-            <input
-              type="text"
+          <div className="mb-3 col-12 text-start  ">
+            <select
               className="form-control"
+              style={{ padding: "5px 27px", color: "#51596c" }}
               id={`degree-${i}`}
               name={`degree`}
-              onChange={(e) => handleEducationEntryChange(i, e)}
-            />
+              // onChange={(e) => handleEducationEntryChange(i, e)}
+              placeholder="Degree"
+            >
+              <option style={{ color: "#51596c" }}>Degree</option>
+              {i === 0
+                ? UGDegree.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))
+                : PGDegree.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+            </select>
           </div>
           <div className="mb-3 col-12 text-start">
-            <label htmlFor={`degree_duration-${i}`} className="form-label">
-              Degree Duration
-            </label>
             <input
               type="text"
               className="form-control"
               id={`degree_duration-${i}`}
               name={`degree_duration`}
               onChange={(e) => handleEducationEntryChange(i, e)}
+              placeholder="Degree Duration"
             />
           </div>
           {/* Repeat for other fields: degree, duration, etc. */}
@@ -221,6 +283,9 @@ function AIModelComponent() {
       case 1:
         return (
           <div>
+            <div class="w-lg-100 text-center mx-lg-auto mb-7">
+              <h2>Enter your Personal details</h2>
+            </div>
             <div className="mb-3 col-12 text-start">
               <label htmlFor="name" className="form-label">
                 Name
@@ -232,6 +297,7 @@ function AIModelComponent() {
                 name="name"
                 value={name}
                 onChange={handleNameChange}
+                placeholder="Enter"
               />
             </div>
             <div className="mb-3 col-12 text-start">
@@ -245,6 +311,7 @@ function AIModelComponent() {
                 name="location"
                 value={location}
                 onChange={handleLocationChange}
+                placeholder="Enter"
               />
             </div>
           </div>
@@ -252,7 +319,42 @@ function AIModelComponent() {
       case 2:
         return (
           <div>
-            <div className="mb-3 col-12 text-start">
+            <div class="w-lg-100 text-center mx-lg-auto mb-7">
+              <h2>Enter your educational details</h2>
+            </div>
+            <div className="mb-3 col-12 text-start d-none">
+              <label
+                htmlFor="numEducationEntry
+           "
+                className="form-label"
+              >
+                Number of Education Entries
+              </label>
+              <select
+                className="form-control p-2"
+                id="numEducationEntry
+             "
+                name="numEducationEntry
+             "
+                onChange={handleEducationEntriesChange}
+                value={numEducationEntries}
+              >
+                <option>Select</option>
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+              </select>
+            </div>
+            {renderEducationSection()}
+          </div>
+        );
+      case 3:
+        return (
+          <div>
+            <div class="w-lg-100 text-center mx-lg-auto mb-7">
+              <h2>Enter your previous job details</h2>
+            </div>
+            <div className="mb-3 col-12 text-start d-none">
               <label htmlFor="numPreviousJobs" className="form-label">
                 Number of Previous Jobs
               </label>
@@ -264,33 +366,20 @@ function AIModelComponent() {
                 onChange={handlePreviousJobsChange}
                 value={numPreviousJobs}
               />
-            </div>
-            {renderPreviousJobSection()}
-          </div>
-        );
-      case 3:
-        return (
-          <div>
-            <div className="mb-3 col-12 text-start">
-              <label
-                htmlFor="numEducationEntry
-              "
-                className="form-label"
-              >
-                Number of Education Entries
-              </label>
-              <input
+              <select
                 type="number"
                 className="form-control"
-                id="numEducationEntry
-                "
-                name="numEducationEntry
-                "
-                onChange={handleEducationEntriesChange}
-                value={numEducationEntries}
-              />
+                id="numPreviousJobs"
+                name="numPreviousJobs"
+                onChange={handlePreviousJobsChange}
+                value={numPreviousJobs}
+              >
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+              </select>
             </div>
-            {renderEducationSection()}
+            {renderPreviousJobSection()}
           </div>
         );
       default:
@@ -342,39 +431,48 @@ function AIModelComponent() {
         const stored = await setDataResults(parsedData);
         console.log(stored);
         setIsLoading(false);
-        navigate("/results");
       })
       .catch((err) => {
         console.log(err);
       });
+    navigate("/results");
   };
 
   return (
-    <div class="container pt-lg-10 pt-5 ">
-      <div class="w-lg-65 text-center mx-lg-auto mb-7">
-        <h2>Enter your profile details</h2>
-      </div>
-
-      <div class="row justify-content-lg-center">
-        <div class="col-lg-8">
-          <div class="card card-lg card-bordered shadow-none">
-            <div class="card-body">
+    <div
+      className="d-flex align-items-center"
+      style={{ transition: "all 0.3s ease" }}
+    >
+      <div
+        class="container pt-lg-10 pt-5 scrollable-container"
+        style={{
+          overflowY: "scroll",
+          height: "100vh",
+          transition: "all 0.3s ease",
+        }}
+      >
+        <div class="row justify-content-lg-center">
+          <div class="col-lg-8">
+            <div
+              class="card card-lg card-bordered shadow-none"
+              style={{ padding: "15px", marginBottom: "30px" }}
+            >
               <form>{renderSection()}</form>
-              <div className="container mt-3 d-flex gap-3 justify-content-center">
+              <div class="container mt-3 d-flex gap-3 justify-content-center">
                 {section === 1 ? (
                   ""
                 ) : (
-                  <button onClick={handlePrev} className="btn btn-secondary">
+                  <button onClick={handlePrev} class="btn btn-secondary">
                     Previous
                   </button>
                 )}
 
                 {section !== 3 ? (
-                  <button onClick={handleNext} className="btn btn-primary">
+                  <button onClick={handleNext} class="btn btn-primary">
                     Next
                   </button>
                 ) : (
-                  <button onClick={handleSubmit} className="btn btn-primary">
+                  <button onClick={handleSubmit} class="btn btn-primary">
                     {isLoading ? <LoadingOutlined /> : "Check"}
                   </button>
                 )}
@@ -383,6 +481,36 @@ function AIModelComponent() {
           </div>
         </div>
       </div>
+
+      {educationEntries ? (
+        educationEntries.length > 1 ? (
+          <div
+            className={`pie-chart-container `}
+            style={{ transition: "all 0.3s ease" }}
+          >
+            <div>
+              <SimplePieChart />
+            </div>
+
+            <div className="mt-3 mb-3">
+              {" "}
+              <Progress
+                type="circle"
+                percent={48}
+                strokeColor={{
+                  "0%": "#108ee9",
+                  "100%": "#87d068",
+                }}
+              />
+            </div>
+            <p>48% Profiles are matching</p>
+          </div>
+        ) : (
+          ""
+        )
+      ) : (
+        ""
+      )}
     </div>
   );
 }

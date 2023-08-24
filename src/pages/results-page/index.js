@@ -1,11 +1,11 @@
 import React from "react";
 import { useApplicationContext } from "../../app-context";
-import { LoadingOutlined } from "@ant-design/icons";
 import "./style.css";
+import { Divider } from "antd";
 
 const ResultsPage = () => {
   const { dataResults } = useApplicationContext();
-  const customStyle = { width: "200px", textAlign: "start" };
+
   const capitalizeFirstWord = (inputString) => {
     if (inputString) {
       return (
@@ -15,12 +15,12 @@ const ResultsPage = () => {
   };
   return (
     <>
-      <div className="container  py-5  ">
+      <div className="container  py-5  " style={{ height: "100vh" }}>
         {dataResults ? (
           <>
             {" "}
-            <h2>Top 4 profiles</h2>
-            <table style={{ overflowX: "scroll" }}>
+            {/* <h2>Top 4 profiles</h2> */}
+            {/* <table style={{ overflowX: "scroll" }}>
               <thead>
                 <tr>
                   <th style={customStyle}>#</th>
@@ -87,111 +87,259 @@ const ResultsPage = () => {
                     })
                   : ""}
               </tbody>
-            </table>
-          </>
-        ) : (
-          <p>
-            Please wait your results are loading... <LoadingOutlined />{" "}
-          </p>
-        )}
-      </div>
+            </table> */}
+            <div class="container-fluid p-3 ">
+              <h1
+                className="mb-3 text-lg-start text-center  container-fluid "
+                style={{ marginLeft: "-32px" }}
+              >
+                <span class="gray-text">CAREER</span>{" "}
+                <span class="green-text">PATH</span>
+              </h1>
 
-      <div class="container-fluid p-3 ">
-        <h1 className="mb-3  pl-2">
-          <span class="gray-text">CAREER</span>{" "}
-          <span class="green-text">PATH</span>
-        </h1>
-        <div class="row mt-4">
-          <div
-            class="col-md-3 text-center"
-            style={{
-              display: "grid",
-              alignContent: "center",
-              justifyItems: "center",
-            }}
-          >
-            <img
-              src="https://res.cloudinary.com/dsw1ubwyh/image/upload/v1692813339/ytsubozmmwei8pujjlzi.png"
-              alt=""
-              style={{
-                transform: "scaleX(-1)",
-                height: "300px",
-                width: "200px",
-              }}
-            />
-            {/* <div class="circle">FOUNDER</div> */}
+              {dataResults.map((data) => {
+                return (
+                  <>
+                    <div class="row mt-4">
+                      <div
+                        class="col-md-3 text-center"
+                        style={{
+                          display: "grid",
+                          alignContent: "center",
+                          justifyItems: "center",
+                        }}
+                      >
+                        <div class="circle mb-4 mb-lg-0">
+                          {data.title_0.toUpperCase()}
+                        </div>
+                      </div>
+                      <div class="col-md-9">
+                        <div class="row d-flex align-items-center">
+                          <div className="container d-lg-flex align-items-center mb-4">
+                            <div class="col-md-4">
+                              <div
+                                class="card mb-4 "
+                                style={{
+                                  background: "#7a111c",
+                                }}
+                              >
+                                <div class="card-body">
+                                  <h5 class="card-title">Education</h5>
+                                </div>
+                              </div>
+                            </div>
 
-            {/* <div
-              class="line"
-              style={{
-                position: "absolute",
-
-                width: "2px",
-                height: "50%",
-                backgroundColor: "black",
-              }}
-            ></div> */}
-          </div>
-          <div class="col-md-8">
-            <div class="row d-flex align-items-center">
-              {dataResults
-                ? dataResults.map((data) => {
-                    return (
-                      <>
-                        <div className="container d-lg-flex align-items-center">
-                          <div div class="col-md-4 mt-8 mt-lg-0  ">
-                            <div class="card mb-4 d-inline-block bg-white  d-lg-block shadow-sm p-2  ms-n5">
-                              <div class="card-body px-2">
-                                <h5 class="card-title">
-                                  {data.title_0.toUpperCase()}
-                                </h5>
+                            <div class="col-md-9 d-flex mt-8 mt-lg-0">
+                              <div class="line-1">
+                                <div class="step-circle-1">1</div>
+                                <div
+                                  class="path-text"
+                                  style={{ marginBottom: "100px" }}
+                                >
+                                  {capitalizeFirstWord(data.digree_0)}
+                                </div>
+                              </div>
+                              <div class="line-1">
+                                <div class="path-text">
+                                  {capitalizeFirstWord(data.digree_1)}
+                                </div>
+                                <div class="step-circle-1">2</div>
+                              </div>
+                              <div class="line-1">
+                                <div class="step-circle-1">3</div>
+                                <div class="path-text">
+                                  {" "}
+                                  {capitalizeFirstWord(data.digree_2)}
+                                </div>
+                              </div>
+                              <div class="line-1">
+                                <div class="step-circle-1">4</div>
+                                <div class="path-text">
+                                  {" "}
+                                  {capitalizeFirstWord(data.digree_3)}
+                                </div>
                               </div>
                             </div>
                           </div>
-
-                          <div class="col-md-9 d-flex mt-8 mt-lg-0">
-                            <div class="line ">
-                              <div class="step-circle">1</div>
+                          <div className="container d-lg-flex align-items-center mb-4">
+                            <div class="col-md-4">
                               <div
-                                class="path-text"
-                                style={{ marginBottom: "100px" }}
+                                class="card mb-4 "
+                                style={{
+                                  background: "#660861",
+                                }}
                               >
-                                {capitalizeFirstWord(data.org_0)}
+                                <div class="card-body">
+                                  <h5 class="card-title">Previous Jobs</h5>
+                                </div>
                               </div>
                             </div>
-                            <div class="line">
-                              <div class="path-text">
-                                {capitalizeFirstWord(data.org_1)}
+
+                            <div class="col-md-9 d-flex mt-8 mt-lg-0">
+                              <div class="line-2 ">
+                                <div class="step-circle-2">1</div>
+                                <div
+                                  class="path-text"
+                                  style={{ marginBottom: "100px" }}
+                                >
+                                  {capitalizeFirstWord(data.title_1)}
+                                </div>
                               </div>
-                              <div class="step-circle">2</div>
-                            </div>
-                            <div class="line">
-                              <div class="step-circle">3</div>
-                              <div class="path-text">
-                                {" "}
-                                {capitalizeFirstWord(data.org_2)}
+                              <div class="line-2">
+                                <div class="path-text">
+                                  {capitalizeFirstWord(data.org_1)}
+                                </div>
+                                <div class="step-circle-2">2</div>
+                              </div>
+                              <div class="line-2">
+                                <div class="step-circle-2">3</div>
+                                <div class="path-text">
+                                  {" "}
+                                  {capitalizeFirstWord(data.title_2)}
+                                </div>
+                              </div>
+                              <div class="line-2">
+                                <div class="step-circle-2">4</div>
+                                <div class="path-text">
+                                  {" "}
+                                  {capitalizeFirstWord(data.title_3)}
+                                </div>
                               </div>
                             </div>
-                            <div class="line">
-                              <div class="step-circle">4</div>
-                              <div class="path-text">
-                                {" "}
-                                {capitalizeFirstWord(data.org_3)}
+                          </div>
+                          <div className="container d-lg-flex align-items-center mb-4">
+                            <div class="col-md-4">
+                              <div
+                                class="card mb-4 "
+                                style={{
+                                  background: "#c96d0a",
+                                }}
+                              >
+                                <div class="card-body">
+                                  <h5 class="card-title">Institutes</h5>
+                                </div>
                               </div>
                             </div>
-                            {/* <div class="line">
-                    <div class="step-circle">5</div>
-                    <div class="path-text">HR Leadership</div>
-                  </div> */}
+
+                            <div class="col-md-9 d-flex mt-8 mt-lg-0">
+                              <div class="line-3 ">
+                                <div class="step-circle-3">1</div>
+                                <div
+                                  class="path-text"
+                                  style={{ marginBottom: "100px" }}
+                                >
+                                  {capitalizeFirstWord(data.institute_0)}
+                                </div>
+                              </div>
+                              <div class="line-3">
+                                <div class="path-text">
+                                  {capitalizeFirstWord(data.institute_1)}
+                                </div>
+                                <div class="step-circle-3">2</div>
+                              </div>
+                              <div class="line-3">
+                                <div class="step-circle-3">3</div>
+                                <div class="path-text">
+                                  {" "}
+                                  {capitalizeFirstWord(data.institute_2)}
+                                </div>
+                              </div>
+                              <div class="line-3">
+                                <div class="step-circle-3">4</div>
+                                <div class="path-text">
+                                  {" "}
+                                  {capitalizeFirstWord(data.institute_3)}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="container d-lg-flex align-items-center mb-4">
+                            <div class="col-md-4">
+                              <div
+                                class="card mb-4"
+                                style={{
+                                  background: "#324957",
+                                }}
+                              >
+                                <div class="card-body">
+                                  <h5 class="card-title">Skills</h5>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-9 d-flex mt-8 mt-lg-0">
+                              <div class="line-4 ">
+                                <div class="step-circle-4">1</div>
+                                <div
+                                  class="path-text"
+                                  style={{ marginBottom: "100px" }}
+                                >
+                                  {capitalizeFirstWord(data.skill_0)}
+                                </div>
+                              </div>
+                              <div class="line-4">
+                                <div class="path-text">
+                                  {capitalizeFirstWord(data.skill_1)}
+                                </div>
+                                <div class="step-circle-4">2</div>
+                              </div>
+                              <div class="line-4">
+                                <div class="step-circle-4">3</div>
+                                <div class="path-text">
+                                  {" "}
+                                  {capitalizeFirstWord(data.skill_2)}
+                                </div>
+                              </div>
+                              <div class="line-4">
+                                <div class="step-circle-4">4</div>
+                                <div class="path-text">
+                                  {" "}
+                                  {capitalizeFirstWord(data.skill_3)}
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </>
-                    );
-                  })
-                : ""}
+                      </div>
+                    </div>
+                    <Divider />
+                  </>
+                );
+              })}
             </div>
-          </div>
-        </div>
+          </>
+        ) : (
+          <>
+            <div class="wrap container">
+              <img
+                src="https://res.cloudinary.com/dsw1ubwyh/image/upload/v1692813339/ytsubozmmwei8pujjlzi.png"
+                alt=""
+                style={{
+                  transform: "scaleX(-1)",
+                  height: "300px",
+                  width: "200px",
+                }}
+              />
+
+              <div
+                class="loading "
+                style={{ display: "grid", placeItems: "center" }}
+              >
+                <div class="loader ">
+                  <div class="loader__bar"></div>
+                  <div class="loader__bar"></div>
+                  <div class="loader__bar"></div>
+                  <div class="loader__bar"></div>
+                  <div class="loader__bar"></div>
+                  <div class="loader__ball"></div>
+                </div>
+                <br />
+                <p class="fw-bold text">
+                  We are fetching the matching profiles
+                </p>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );
