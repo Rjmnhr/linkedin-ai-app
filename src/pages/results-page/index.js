@@ -13,6 +13,8 @@ const ResultsPage = () => {
       );
     }
   };
+
+  console.log("dataResults", dataResults);
   return (
     <>
       <div className="container  py-5  " style={{ height: "100vh" }}>

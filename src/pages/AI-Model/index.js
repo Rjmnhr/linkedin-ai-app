@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useApplicationContext } from "../../app-context";
 import { useNavigate } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons/lib/icons";
@@ -18,9 +18,25 @@ function AIModelComponent() {
   const [previousJobs, setPreviousJobs] = useState([]);
   const [educationEntries, setEducationEntries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const [matchPercentage, setMatchPercentage] = useState(48);
+
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   const { setDataResults } = useApplicationContext();
+  // useEffect(() => {
+  //   AxiosInstance.get("/api/linkedin/data")
+  //     .then(async (response) => {
+  //       const resultData = await response.data;
+  //       console.log(resultData);
+  //       setLinkedInData(resultData);
+  //     })
+  //     .catch((err) => console.log("error", err));
+  // }, []);
+
+  useEffect(() => {
+    setDataResults(null);
+    // eslint-disable-next-line
+  }, []);
+
   const navigate = useNavigate();
 
   const handlePreviousJobsChange = (event) => {
@@ -91,7 +107,7 @@ function AIModelComponent() {
               name={`experience`}
               placeholder="Experience"
             >
-              <option>Experience</option>
+              <option value={0}>Experience</option>
               <option value="fresher">Fresher</option>
               <option value="1">1 year</option>
               <option value="2">2 years</option>
@@ -103,6 +119,7 @@ function AIModelComponent() {
           </div>
           <div className="mb-3 col-12 text-start">
             <input
+              required
               type="text"
               className="form-control"
               id={`organization-${i}`}
@@ -113,6 +130,7 @@ function AIModelComponent() {
           </div>
           <div className="mb-3 col-12 text-start">
             <input
+              required
               type="text"
               className="form-control"
               id={`title-${i}`}
@@ -123,16 +141,18 @@ function AIModelComponent() {
           </div>
           <div className="mb-3 col-12 text-start">
             <input
-              type="text"
+              required
+              type="number"
               className="form-control"
               id={`duration-${i}`}
               name={`duration`}
-              // onChange={(e) => handlePreviousJobChange(i, e)}
+              onChange={(e) => handlePreviousJobChange(i, e)}
               placeholder="Duration in months"
             />
           </div>
           <div className="mb-3 col-12 text-start">
             <input
+              required
               type="text"
               className="form-control"
               id={`job_location-${i}`}
@@ -142,7 +162,7 @@ function AIModelComponent() {
             />
           </div>
           {/* <div className="mb-3 col-12 text-start">
-            <input
+            // <input required
               type="text"
               className="form-control"
               id={`emp_count-${i}`}
@@ -152,7 +172,7 @@ function AIModelComponent() {
             />
           </div>
           <div className="mb-3 col-12 text-start">
-            <input
+            // <input required
               type="text"
               className="form-control"
               id={`industry-${i}`}
@@ -218,6 +238,7 @@ function AIModelComponent() {
               Institute
             </label> */}
             <input
+              required
               type="text"
               className="form-control"
               id={`institute-${i}`}
@@ -232,7 +253,7 @@ function AIModelComponent() {
               style={{ padding: "5px 27px", color: "#51596c" }}
               id={`degree-${i}`}
               name={`degree`}
-              // onChange={(e) => handleEducationEntryChange(i, e)}
+              onChange={(e) => handleEducationEntryChange(i, e)}
               placeholder="Degree"
             >
               <option style={{ color: "#51596c" }}>Degree</option>
@@ -251,7 +272,8 @@ function AIModelComponent() {
           </div>
           <div className="mb-3 col-12 text-start">
             <input
-              type="text"
+              required
+              type="number"
               className="form-control"
               id={`degree_duration-${i}`}
               name={`degree_duration`}
@@ -266,14 +288,19 @@ function AIModelComponent() {
     return <div>{educationSections}</div>;
   };
 
-  const handleNext = () => {
-    if (section < 3) {
+  const handleNext = (e) => {
+    e.preventDefault();
+    if (section === 3) {
+      handleSubmit();
+    } else if (section < 3) {
       setSection(section + 1);
     }
   };
 
   const handlePrev = () => {
     if (section > 1) {
+      console.log("🚀 ~ file: index.js:307 ~ handlePrev ~ section:", section);
+
       setSection(section - 1);
     }
   };
@@ -291,6 +318,7 @@ function AIModelComponent() {
                 Name
               </label>
               <input
+                required
                 type="text"
                 className="form-control"
                 id="name"
@@ -305,6 +333,7 @@ function AIModelComponent() {
                 Location
               </label>
               <input
+                required
                 type="text"
                 className="form-control"
                 id="location"
@@ -359,6 +388,7 @@ function AIModelComponent() {
                 Number of Previous Jobs
               </label>
               <input
+                required
                 type="number"
                 className="form-control"
                 id="numPreviousJobs"
@@ -394,29 +424,29 @@ function AIModelComponent() {
     formData.append("location", location);
 
     console.log(JSON.stringify(educationEntries));
-
     // Process previous jobs
     for (let i = 0; i < previousJobs.length; i++) {
-      formData.append(`org_${i + 1}`, previousJobs[i].organization);
-      formData.append(`title_${i + 1}`, previousJobs[i].title);
-      formData.append(`job_${i + 1}_duration`, previousJobs[i].duration);
-      formData.append(`job_${i + 1}_location`, previousJobs[i].job_location);
-      formData.append(`company_${i + 1}_emp_count`, previousJobs[i].emp_count);
-      formData.append(`company_${i + 1}_industry`, previousJobs[i].industry);
+      const job = previousJobs[i];
+      formData.append(`org_${i + 1}`, job.organization || "");
+      formData.append(`title_${i + 1}`, job.title || "");
+      formData.append(`job_${i + 1}_duration`, Number(job.duration) || 1);
+      formData.append(`job_${i + 1}_location`, job.job_location || "");
+      formData.append(`company_${i + 1}_emp_count`, Number(job.emp_count) || 1);
+      formData.append(`company_${i + 1}_industry`, job.industry || "");
     }
 
     // Process education entries
     for (let i = 0; i < educationEntries.length; i++) {
-      formData.append(`institute_${i + 1}`, educationEntries[i].institute);
-      formData.append(`degree_${i + 1}`, educationEntries[i].degree);
+      const education = educationEntries[i];
+      formData.append(`institute_${i + 1}`, education.institute || "");
+      formData.append(`degree_${i + 1}`, education.degree || "");
       formData.append(
         `degree_${i + 1}_duration`,
-        educationEntries[i].degree_duration
+        Number(education.degree_duration) || 1
       );
     }
-
     axios
-      .post("https://backend.2ndstorey.com/api/ai/run-model", formData, {
+      .post("http://localhost:8002/api/ai/run-model", formData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -435,7 +465,12 @@ function AIModelComponent() {
       .catch((err) => {
         console.log(err);
       });
-    navigate("/results");
+
+    if (isLoggedIn === "true") {
+      navigate("/results");
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
@@ -457,26 +492,28 @@ function AIModelComponent() {
               class="card card-lg card-bordered shadow-none"
               style={{ padding: "15px", marginBottom: "30px" }}
             >
-              <form>{renderSection()}</form>
-              <div class="container mt-3 d-flex gap-3 justify-content-center">
-                {section === 1 ? (
-                  ""
-                ) : (
-                  <button onClick={handlePrev} class="btn btn-secondary">
-                    Previous
-                  </button>
-                )}
+              <form onSubmit={handleNext}>
+                {renderSection()}
+                <div class="container mt-3 d-flex gap-3 justify-content-center">
+                  {section === 1 ? (
+                    ""
+                  ) : (
+                    <button onClick={handlePrev} class="btn btn-secondary">
+                      Previous
+                    </button>
+                  )}
 
-                {section !== 3 ? (
-                  <button onClick={handleNext} class="btn btn-primary">
-                    Next
-                  </button>
-                ) : (
-                  <button onClick={handleSubmit} class="btn btn-primary">
-                    {isLoading ? <LoadingOutlined /> : "Check"}
-                  </button>
-                )}
-              </div>
+                  {section !== 3 ? (
+                    <button type="submit" class="btn btn-primary">
+                      Next
+                    </button>
+                  ) : (
+                    <button type="submit" class="btn btn-primary">
+                      {isLoading ? <LoadingOutlined /> : "Check"}
+                    </button>
+                  )}
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -503,7 +540,7 @@ function AIModelComponent() {
                 }}
               />
             </div>
-            <p>48% Profiles are matching</p>
+            <p>{48}% Profiles are matching</p>
           </div>
         ) : (
           ""
