@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useApplicationContext } from "../../app-context";
 import { useNavigate } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons/lib/icons";
-import SimplePieChart from "../../components/pie-charts/progress-chart";
+// import SimplePieChart from "../../components/pie-charts/progress-chart";
 import "./style.css";
 import { PGDegree, UGDegree } from "../../list-of-degrees/list-of-degree";
 import { Progress } from "antd";
