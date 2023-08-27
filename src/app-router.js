@@ -62,6 +62,16 @@ const AppRouter = () => {
             }
           />
           <Route
+            path="/login-app"
+            element={
+              <>
+                <div>
+                  <LoginPage />
+                </div>
+              </>
+            }
+          />
+          <Route
             path="/test"
             element={
               <>

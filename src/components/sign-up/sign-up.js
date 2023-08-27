@@ -61,7 +61,11 @@ const SignUp = () => {
         localStorage.setItem("password", password);
 
         setIsLoading(false);
-        navigate("/otp-validation");
+        if (Location.pathname === "/login-app") {
+          navigate("/results");
+        } else {
+          navigate("/details");
+        }
       })
       .catch((err) => console.log(err));
   };

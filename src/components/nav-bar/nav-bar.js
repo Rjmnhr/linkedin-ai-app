@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useApplicationContext } from "../../context/app-context";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -9,7 +8,7 @@ const NavBar = () => {
   // const [visible, setVisible] = useState(true);
   const [dropdownActive, setDropdownActive] = useState(false);
   const divRef = useRef(null);
-  const { setDropdownHeight } = useApplicationContext();
+
   const isAdmin = localStorage.getItem("isAdmin");
 
   // const handleScroll = () => {
@@ -48,19 +47,6 @@ const NavBar = () => {
   //   // eslint-disable-next-line
   // }, [prevScrollPos, visible]);
 
-  useEffect(() => {
-    if (dropdownActive) {
-      if (divRef.current) {
-        const height = divRef.current.clientHeight;
-        console.log("height", height);
-        setDropdownHeight(height);
-      }
-    } else {
-      setDropdownHeight(null);
-    }
-    // eslint-disable-next-line
-  }, [dropdownActive]);
-
   return (
     <>
       <header
@@ -79,7 +65,7 @@ const NavBar = () => {
               className="navbar-brand fw-bold  "
               href="/"
             >
-              2nd Storey
+              Azkroflyz
             </a>
 
             <button
@@ -115,7 +101,7 @@ const NavBar = () => {
                 }'
                   ></li>
                   <li
-                    className="hs-has-mega-menu nav-item"
+                    className="hs-has-mega-menu invisible nav-item"
                     data-hs-mega-menu-item-options='{
                   "desktop": {
                     "maxWidth": "20rem"
@@ -152,7 +138,7 @@ const NavBar = () => {
                   </li> */}
 
                   <li
-                    className="hs-has-mega-menu nav-item mb-3 mb-lg-0"
+                    className="hs-has-mega-menu invisible nav-item mb-3 mb-lg-0"
                     data-hs-mega-menu-item-options='{
                   "desktop": {
                     "maxWidth": "20rem"
@@ -188,7 +174,7 @@ const NavBar = () => {
                     )}
 
                     {isAdmin === "true" ? (
-                      <a className="btn  p-2  d-lg-none" href="/suburbs">
+                      <a className="btn  p-2 d-none d-lg-none" href="/suburbs">
                         Dashboard
                       </a>
                     ) : (
@@ -196,7 +182,7 @@ const NavBar = () => {
                     )}
                   </li>
 
-                  <li className="nav-item">
+                  <li className="nav-item d-none">
                     {isAdmin === "true" ? (
                       <a
                         className="btn border  p-2 d-none d-lg-inline-block"

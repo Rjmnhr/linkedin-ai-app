@@ -5,19 +5,23 @@ import { useNavigate } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons/lib/icons";
 import SimplePieChart from "../../components/pie-charts/progress-chart";
 import "./style.css";
-// import ProfileBarChart from "../../components/pie-charts/bar-chart";
 import { PGDegree, UGDegree } from "../../list-of-degrees/list-of-degree";
 import { Progress } from "antd";
+import NavBar from "../../components/nav-bar/nav-bar";
+import { linkedInData } from "../../components/linkedin-data";
 
 function AIModelComponent() {
   const [section, setSection] = useState(1);
   const [numPreviousJobs, setNumPreviousJobs] = useState(1);
   const [numEducationEntries, setNumEducationEntries] = useState(2);
   const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(null);
   const [previousJobs, setPreviousJobs] = useState([]);
   const [educationEntries, setEducationEntries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [jobTitle, setJobTitle] = useState(null);
+
+  const [matchingPercentage, setMatchingPercentage] = useState(null);
 
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
@@ -37,6 +41,22 @@ function AIModelComponent() {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    const totalProfiles = linkedInData.length;
+
+    if (jobTitle === "") {
+      setJobTitle("undefined");
+    }
+
+    const filteredArr = linkedInData.filter(
+      (profile) =>
+        profile.all_loc_cols.includes(location) ||
+        profile.all_titles.includes(jobTitle)
+    );
+    const percentage = (filteredArr.length / totalProfiles) * 100;
+    setMatchingPercentage(percentage.toFixed(2));
+  }, [location, jobTitle]);
+
   const navigate = useNavigate();
 
   const handlePreviousJobsChange = (event) => {
@@ -55,6 +75,9 @@ function AIModelComponent() {
     setLocation(event.target.value);
   };
   const handlePreviousJobChange = (index, e) => {
+    if (e.target.name === "title") {
+      setJobTitle(e.target.value);
+    }
     const updatedPreviousJobs = [...previousJobs];
 
     if (updatedPreviousJobs.length > index) {
@@ -158,6 +181,7 @@ function AIModelComponent() {
               id={`job_location-${i}`}
               name={`job_location`}
               // onChange={(e) => handlePreviousJobChange(i, e)}
+
               placeholder="Job location"
             />
           </div>
@@ -469,86 +493,94 @@ function AIModelComponent() {
     if (isLoggedIn === "true") {
       navigate("/results");
     } else {
-      navigate("/login");
+      navigate("/login-app");
     }
   };
 
   return (
-    <div
-      className="d-flex align-items-center"
-      style={{ transition: "all 0.3s ease" }}
-    >
+    <>
+      <NavBar />
       <div
-        class="container pt-lg-10 pt-5 scrollable-container"
-        style={{
-          overflowY: "scroll",
-          height: "100vh",
-          transition: "all 0.3s ease",
-        }}
+        className="d-flex align-items-center"
+        style={{ transition: "all 0.3s ease" }}
       >
-        <div class="row justify-content-lg-center">
-          <div class="col-lg-8">
-            <div
-              class="card card-lg card-bordered shadow-none"
-              style={{ padding: "15px", marginBottom: "30px" }}
-            >
-              <form onSubmit={handleNext}>
-                {renderSection()}
-                <div class="container mt-3 d-flex gap-3 justify-content-center">
-                  {section === 1 ? (
-                    ""
-                  ) : (
-                    <button onClick={handlePrev} class="btn btn-secondary">
-                      Previous
-                    </button>
-                  )}
+        <div
+          class="container pt-lg-10 pt-5 scrollable-container"
+          style={{
+            overflowY: "scroll",
+            height: "100vh",
+            transition: "all 0.3s ease",
+          }}
+        >
+          <div class="row justify-content-lg-center">
+            <div class="col-lg-8">
+              <div
+                class="card card-lg card-bordered shadow-none"
+                style={{ padding: "15px", marginBottom: "30px" }}
+              >
+                <form onSubmit={handleNext}>
+                  {renderSection()}
+                  <div class="container mt-3 d-flex gap-3 justify-content-center">
+                    {section === 1 ? (
+                      ""
+                    ) : (
+                      <button onClick={handlePrev} class="btn btn-secondary">
+                        Previous
+                      </button>
+                    )}
 
-                  {section !== 3 ? (
-                    <button type="submit" class="btn btn-primary">
-                      Next
-                    </button>
-                  ) : (
-                    <button type="submit" class="btn btn-primary">
-                      {isLoading ? <LoadingOutlined /> : "Check"}
-                    </button>
-                  )}
-                </div>
-              </form>
+                    {section !== 3 ? (
+                      <button type="submit" class="btn btn-primary">
+                        Next
+                      </button>
+                    ) : (
+                      <button type="submit" class="btn btn-primary">
+                        {isLoading ? <LoadingOutlined /> : "Check"}
+                      </button>
+                    )}
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {educationEntries ? (
-        educationEntries.length > 1 ? (
-          <div
-            className={`pie-chart-container `}
-            style={{ transition: "all 0.3s ease" }}
-          >
-            <div>
-              <SimplePieChart />
-            </div>
+        {educationEntries ? (
+          educationEntries.length > 1 ? (
+            <div
+              className={`pie-chart-container `}
+              style={{
+                transition: "all 0.3s ease",
+                display: "grid",
+                placeItems: "center",
+                alignContent: "center",
+              }}
+            >
+              {/* <div>
+                <SimplePieChart />
+              </div> */}
 
-            <div className="mt-3 mb-3">
-              {" "}
-              <Progress
-                type="circle"
-                percent={48}
-                strokeColor={{
-                  "0%": "#108ee9",
-                  "100%": "#87d068",
-                }}
-              />
+              <div className="mt-3 mb-3">
+                {" "}
+                <Progress
+                  type="circle"
+                  percent={matchingPercentage}
+                  strokeColor={{
+                    "0%": "#108ee9",
+                    "100%": "#87d068",
+                  }}
+                />
+              </div>
+              <p>{matchingPercentage}% Profiles are matching</p>
             </div>
-            <p>{48}% Profiles are matching</p>
-          </div>
+          ) : (
+            ""
+          )
         ) : (
           ""
-        )
-      ) : (
-        ""
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 }
 

@@ -71,9 +71,9 @@ const SignIn = () => {
         setEmail("");
         setPassword("");
         if (Location.pathname === "/login-app") {
-          navigate("/application");
-        } else {
           navigate("/results");
+        } else {
+          navigate("/details");
         }
       })
       .catch((err) => {
