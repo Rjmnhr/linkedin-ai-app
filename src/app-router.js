@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/home-page";
-import AIModelComponent from "./pages/AI-Model";
+// import AIModelComponent from "./pages/AI-Model";
 import ResultsPage from "./pages/results-page";
 import LoginPage from "./pages/login-page";
 import OtpVerification from "./pages/otp-verification";
-import TestApp from "./components/test";
+
+import CarouselApp from "./components/carousel-component";
 
 const AppRouter = () => {
   return (
@@ -26,7 +27,7 @@ const AppRouter = () => {
             element={
               <>
                 <div>
-                  <AIModelComponent />
+                  <CarouselApp />
                 </div>
               </>
             }
@@ -76,7 +77,7 @@ const AppRouter = () => {
             element={
               <>
                 <div>
-                  <TestApp />
+                  <CarouselApp />
                 </div>
               </>
             }

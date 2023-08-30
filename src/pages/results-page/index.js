@@ -17,7 +17,10 @@ const ResultsPage = () => {
   console.log("dataResults", dataResults);
   return (
     <>
-      <div className="container  py-5  " style={{ height: "100vh" }}>
+      <div
+        className="container-fluid px-lg-8 px-3  py-5  "
+        style={{ height: "100vh" }}
+      >
         {dataResults ? (
           <>
             {" "}
@@ -92,9 +95,13 @@ const ResultsPage = () => {
             </table> */}
             <div class="container-fluid p-3 ">
               <h1
-                className="mb-3 text-lg-start text-center  container-fluid "
+                className="mb-10 text-lg-start text-center  container-fluid "
                 style={{ marginLeft: "-32px" }}
               >
+                <span style={{ borderBottom: "8px solid #008000" }}>
+                  {" "}
+                  TOP 4 PROFILE
+                </span>{" "}
                 <span class="gray-text">CAREER</span>{" "}
                 <span class="green-text">PATH</span>
               </h1>
@@ -307,6 +314,14 @@ const ResultsPage = () => {
                   </>
                 );
               })}
+              <h2 className="container-fluid text-lg-start text-center mb-3">
+                TOP SKILLS NEEDED
+              </h2>
+              {dataResults.map((profile) => (
+                <p className="fs-3 container-fluid text-lg-start text-center">
+                  {capitalizeFirstWord(profile.skill_0)}
+                </p>
+              ))}
             </div>
           </>
         ) : (

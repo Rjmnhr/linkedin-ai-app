@@ -1149,7 +1149,7 @@ export const linkedInData = [
     all_loc_cols: "coimbatore coimbatore",
     all_instutes:
       "srimathi indira gandhi college,st.josph's anglo indian school",
-    all_degree: "masterâ€™s degree",
+    all_degree: "master's degree",
     all_comp_emp_count: 0,
     all_comp_ind: "",
   },

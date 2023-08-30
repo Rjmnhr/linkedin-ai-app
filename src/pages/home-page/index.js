@@ -8,6 +8,20 @@ const HomePage = () => {
     navigate("/details");
   };
 
+  const jobTitles = [
+    "Founder",
+    "CEO",
+    "Product Manager",
+    "VP/P",
+    "GM",
+    "Partner",
+    "Business Analyst",
+    "Business Development Manager",
+    "Project Manager",
+    "Software/Senior Software Engineer",
+    "Consultant",
+  ];
+
   return (
     <div>
       <div className="overflow-hidden content-space-t-lg-1">
@@ -37,18 +51,27 @@ const HomePage = () => {
           </div>
 
           <div className="w-lg-65 mx-lg-auto">
-            {/* <form>
+            <form>
               <div className="input-card input-card-sm">
-                <div className="input-card-form">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    id="nameRegisterForm"
-                    placeholder="Your name"
-                    aria-label="Your name"
-                  />
-                </div>
-                <div className="input-card-form">
+                <select
+                  id="jobTitleSelect"
+                  className="form-control"
+                  style={{
+                    padding: "1px 27px",
+                    color: "#51596c",
+
+                    marginTop: "7px",
+                  }}
+                >
+                  <option value="">What you want to become?</option>
+                  {jobTitles.map((title, index) => (
+                    <option key={index} value={title}>
+                      {title}
+                    </option>
+                  ))}
+                </select>
+
+                {/* <div className="input-card-form">
                   <label
                     for="emailRegisterForm"
                     className="form-label visually-hidden"
@@ -62,17 +85,16 @@ const HomePage = () => {
                     placeholder="Your email"
                     aria-label="Your email"
                   />
-                </div>
-               
+                </div> */}
+                <button
+                  type="button"
+                  className="btn btn-primary w-50 btn-lg   "
+                  onClick={handleNavigate}
+                >
+                  Get started
+                </button>
               </div>
-            </form> */}
-            <button
-              type="button"
-              className="btn btn-primary btn-lg w-50"
-              onClick={handleNavigate}
-            >
-              Get started
-            </button>
+            </form>
           </div>
         </div>
       </div>

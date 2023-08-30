@@ -1,0 +1,17 @@
+:where(.css-dev-only-do-not-override-17a39f8).ant-collapse {
+    background-color: white
+}
+
+:where(.css-dev-only-do-not-override-17a39f8).ant-collapse .ant-collapse-content {
+    border-top: none;
+}
+
+
+
+:where(.css-dev-only-do-not-override-17a39f8).ant-collapse {
+    border: none;
+}
+
+:where(.css-dev-only-do-not-override-17a39f8).ant-collapse>.ant-collapse-item >.ant-collapse-header .ant-collapse-expand-icon {
+    display: none;
+}

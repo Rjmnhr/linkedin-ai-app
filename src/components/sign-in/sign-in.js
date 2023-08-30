@@ -107,6 +107,7 @@ const SignIn = () => {
     return () => clearTimeout(timeoutId);
     // eslint-disable-next-line
   }, [isLoading]);
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
   return (
     <>
       {contextHolder}
@@ -118,6 +119,13 @@ const SignIn = () => {
           <div className="container mt-3 mt-lg-0 mb-5 ">
             <div className="mx-lg-auto" style={{ maxWidth: "55rem" }}>
               <div className="d-flex justify-content-center align-items-center flex-column min-vh-lg-100">
+                {isLoggedIn === "true " ? (
+                  ""
+                ) : (
+                  <h3 className="mb-3">
+                    Log in to see the Top 4 profiles matched
+                  </h3>
+                )}
                 <div className="position-relative">
                   <div className="card card-shadow card-login">
                     <div className="row">
