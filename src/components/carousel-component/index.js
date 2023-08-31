@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Carousel, Radio, Button, Progress, Modal } from "antd";
 import { PGDegree, UGDegree } from "../../list-of-degrees/list-of-degree";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { linkedInData } from "../linkedin-data";
+import { linkedinDataNew } from "../linkedin-data";
 import { useApplicationContext } from "../../app-context";
 import AxiosInstance from "../axios";
 import { useNavigate } from "react-router-dom";
@@ -42,16 +42,37 @@ const App = () => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
   const { Panel } = Collapse;
   const [activePanels, setActivePanels] = useState([0]); // Set the panel indexes to open initially
-  //   useEffect(() => {
-  //     AxiosInstance.get("/api/linkedin/data")
-  //       .then(async (response) => {
-  //         const resultData = await response.data;
 
-  //         console.log(resultData);
-  //         setDataLinkedIn(resultData);
-  //       })
-  //       .catch((err) => console.log("error", err));
-  //   }, []);
+  const degreeDurationOptions = [
+    "Less than 1 year",
+    "1 year",
+    "2 years",
+    "3 years",
+    "4 years",
+    "Greater than 4 years",
+  ];
+
+  const jobDurationOptions = [
+    "Less than 1 year",
+    "1 year",
+    "2 years",
+    "3 years",
+    "4 years",
+    "5 years",
+    "6 years",
+    "Greater than 6 years",
+  ];
+
+  useEffect(() => {
+    AxiosInstance.get("/api/linkedin/data")
+      .then(async (response) => {
+        const resultData = await response.data;
+
+        console.log(JSON.stringify(resultData));
+        // setDataLinkedIn(resultData);
+      })
+      .catch((err) => console.log("error", err));
+  }, []);
 
   useEffect(() => {
     setDataResults(null);
@@ -274,7 +295,7 @@ const App = () => {
     const profileField = mapFormFieldToProfileField(fieldName); // Implement this mapping
 
     const matchPercentage = calculateMatchPercentage(
-      linkedInData,
+      linkedinDataNew,
       profileField,
       LoweredValue
     );
@@ -303,7 +324,7 @@ const App = () => {
     );
 
     const matchPercentage = calculateMatchPercentage(
-      linkedInData,
+      linkedinDataNew,
       profileField,
       LoweredValue
     );
@@ -402,7 +423,7 @@ const App = () => {
                 className="form-control"
                 id={`institute-${i}`}
                 name={`institute`}
-                onChange={(e) => handleEducationEntryChange(i, e)}
+                onBlur={(e) => handleEducationEntryChange(i, e)}
                 placeholder="Institute"
               />
               <div
@@ -460,15 +481,20 @@ const App = () => {
               </div>
             </div>
             <div className="mb-3 col-lg-4 col-12 text-start  ">
-              <input
+              <select
                 required
-                type="number"
                 className="form-control"
+                style={{ padding: "5px 27px", color: "#51596c" }}
                 id={`degree_duration-${i}`}
                 name={`degree_duration`}
                 onChange={(e) => handleEducationEntryChange(i, e)}
                 placeholder="Degree Duration"
-              />
+              >
+                <option value={0}>Duration</option>
+                {degreeDurationOptions.map((data) => (
+                  <option value={data}>{data}</option>
+                ))}
+              </select>
               <div
                 style={{
                   visibility: durationValues[i] ? "visible" : "hidden",
@@ -512,8 +538,11 @@ const App = () => {
         >
           <div>
             {/* <h4>Previous Job {i + 1}</h4> */}
-            <div className="d-lg-flex align-items-center justify-content-start mt-5 mb-5  flex-wrap">
-              <div className="mb-3 col-lg-4 col-12 text-start  ">
+            <div className="d-lg-flex align-items-center justify-content-center   flex-wrap">
+              <div
+                className="mb-3 col-lg-2 col-12 text-start"
+                style={{ width: "180px" }}
+              >
                 <select
                   type="text"
                   className="form-control"
@@ -521,7 +550,7 @@ const App = () => {
                   id={`experience-${i}`}
                   name={`experience`}
                   placeholder="Experience"
-                  onChange={(e) => handlePreviousJobChange(i, e)}
+                  // onBlur={(e) => handlePreviousJobChange(i, e)}
                 >
                   <option value={0}>Experience</option>
                   <option value="fresher">Fresher</option>
@@ -548,14 +577,17 @@ const App = () => {
                   />
                 </div>
               </div>
-              <div className="mb-3 col-lg-4 col-12 text-start  ">
+              <div
+                className="mb-3 col-lg-2 col-12 text-start  "
+                style={{ width: "180px" }}
+              >
                 <input
                   required
                   type="text"
                   className="form-control"
                   id={`organization-${i}`}
                   name={`organization`}
-                  onChange={(e) => handlePreviousJobChange(i, e)}
+                  onBlur={(e) => handlePreviousJobChange(i, e)}
                   placeholder="organization"
                 />
                 <div
@@ -574,14 +606,17 @@ const App = () => {
                   />
                 </div>
               </div>
-              <div className="mb-3 col-lg-4 col-12 text-start  ">
+              <div
+                className="mb-3 col-lg-2 col-12 text-start"
+                style={{ width: "180px" }}
+              >
                 <input
                   required
                   type="text"
                   className="form-control"
                   id={`title-${i}`}
                   name={`title`}
-                  onChange={(e) => handlePreviousJobChange(i, e)}
+                  onBlur={(e) => handlePreviousJobChange(i, e)}
                   placeholder="Title"
                 />
                 <div
@@ -600,8 +635,12 @@ const App = () => {
                   />
                 </div>
               </div>
-              <div className="mb-3 col-lg-4 col-12 text-start  ">
-                <input
+              <div
+                className="mb-3 col-lg-2 col-12 text-start"
+                style={{ width: "180px" }}
+              >
+                <select
+                  style={{ padding: "5px 27px", color: "#51596c" }}
                   required
                   type="number"
                   className="form-control"
@@ -609,7 +648,12 @@ const App = () => {
                   name={`duration`}
                   onChange={(e) => handlePreviousJobChange(i, e)}
                   placeholder="Duration in months"
-                />
+                >
+                  <option value={0}>Duration</option>
+                  {jobDurationOptions.map((data) => (
+                    <option value={data}>{data}</option>
+                  ))}
+                </select>
                 <div
                   style={{
                     visibility: durationValuesJob[i] ? "visible" : "hidden",
@@ -626,14 +670,17 @@ const App = () => {
                   />
                 </div>
               </div>
-              <div className="mb-3 col-lg-4 col-12 text-start  ">
+              <div
+                className="mb-3 col-lg-2 col-12 text-start"
+                style={{ width: "180px" }}
+              >
                 <input
                   required
                   type="text"
                   className="form-control"
                   id={`job_location-${i}`}
                   name={`job_location`}
-                  onChange={(e) => handlePreviousJobChange(i, e)}
+                  onBlur={(e) => handlePreviousJobChange(i, e)}
                   placeholder="Job location"
                 />
                 <div
@@ -653,13 +700,16 @@ const App = () => {
                 </div>
               </div>
 
-              <div className="mb-3 col-lg-4 col-12 text-start  ">
+              <div
+                className="mb-3 col-lg-2 col-12 text-start  "
+                style={{ width: "180px" }}
+              >
                 <select
                   id="companySize"
                   name="companySize"
                   className="form-control"
                   style={{ padding: "5px 27px", color: "#51596c" }}
-                  onChange={(e) => handlePreviousJobChange(i, e)}
+                  // onBlur={(e) => handlePreviousJobChange(i, e)}
                 >
                   <option>Company size</option>
                   <option value="1">Freelancer / Solo Entrepreneur</option>
@@ -684,7 +734,10 @@ const App = () => {
                   />
                 </div>
               </div>
-              <div className="mb-3 col-lg-4 col-12 text-start  ">
+              <div
+                className="mb-3 col-lg-2 col-12 text-start"
+                style={{ width: "180px" }}
+              >
                 <select
                   id="industrySector"
                   name="industrySector"
@@ -762,7 +815,7 @@ const App = () => {
   return (
     <>
       <Radio.Group
-        onChange={handlePositionChange}
+        onBlur={handlePositionChange}
         value={dotPosition}
         style={{
           marginBottom: 8,
@@ -788,14 +841,14 @@ const App = () => {
         </div>
 
         <div style={{ transition: "all 0.3s ease" }}>
-          <div class="container-fluid  pt-5 scrollable-container">
+          <div class="container-fluid px-5  pt-5 scrollable-container">
             <div class="row justify-content-lg-center">
-              <div class="col-lg-8">
+              <div class="col-lg-12">
                 <form onSubmit={handleNext}>{renderPreviousJobSection()}</form>
               </div>
             </div>
           </div>
-          <div className="col-10 text-end">
+          <div className="col-12 px-5 text-end">
             <Button onClick={handleAddJob}>+ Add more</Button>
           </div>
         </div>
