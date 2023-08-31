@@ -22,7 +22,9 @@ const App = () => {
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
     useState(false);
   const [deletingIndex, setDeletingIndex] = useState(null);
-  const [instituteValues, setInstituteValues] = useState([]);
+  const [instituteValues, setInstituteValues] = useState(
+    JSON.parse(sessionStorage.getItem("institute")) || []
+  );
   const [degreeValues, setDegreeValues] = useState([]);
   const [durationValues, setDurationValues] = useState([]);
   const [experienceValues, setExperienceValues] = useState([]);
@@ -33,10 +35,11 @@ const App = () => {
   const [companySizeValues, setCompanySizeValues] = useState([]);
   const [sectorValues, setSectorValues] = useState([]);
   const [educationMatchPercentages, setEducationMatchPercentages] = useState(
-    []
+    JSON.parse(sessionStorage.getItem("education_match_percentage")) || []
   );
-  const [PreviousJobMatchPercentages, setPreviousJobMatchPercentages] =
-    useState([]);
+  const [previousJobMatchPercentages, setPreviousJobMatchPercentages] =
+    useState(JSON.parse(sessionStorage.getItem("job_match_percentage")) || []);
+
   const { setDataResults } = useApplicationContext();
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -64,15 +67,93 @@ const App = () => {
   ];
 
   useEffect(() => {
-    AxiosInstance.get("/api/linkedin/data")
-      .then(async (response) => {
-        const resultData = await response.data;
+    // Retrieve and populate institute values from sessionStorage
+    const retrievedInstituteValues = [];
+    for (let i = 0; i < numEducationEntries; i++) {
+      const value = sessionStorage.getItem(`institute_${i}`);
+      retrievedInstituteValues.push(value || null);
+    }
+    setInstituteValues(retrievedInstituteValues);
 
-        console.log(JSON.stringify(resultData));
-        // setDataLinkedIn(resultData);
-      })
-      .catch((err) => console.log("error", err));
+    const retrievedDegreeValues = [];
+
+    for (let i = 0; i < numEducationEntries; i++) {
+      const value = sessionStorage.getItem(`degree_${i}`);
+      retrievedDegreeValues.push(value || null);
+    }
+    setDegreeValues(retrievedDegreeValues);
+
+    const retrievedDegreeDurationValues = [];
+    for (let i = 0; i < numEducationEntries; i++) {
+      const value = sessionStorage.getItem(`degree_duration_${i}`);
+      retrievedDegreeDurationValues.push(value || null);
+    }
+    setDurationValues(retrievedDegreeDurationValues);
+
+    const retrievedExperienceValues = [];
+    for (let i = 0; i < numEducationEntries; i++) {
+      const value = sessionStorage.getItem(`experience_${i}`);
+      retrievedExperienceValues.push(value || null);
+    }
+    setExperienceValues(retrievedExperienceValues);
+
+    const retrievedOrganizationValues = [];
+    for (let i = 0; i < numEducationEntries; i++) {
+      const value = sessionStorage.getItem(`organization_${i}`);
+      retrievedOrganizationValues.push(value || null);
+    }
+    setOrganizationValues(retrievedOrganizationValues);
+
+    const retrievedTitleValues = [];
+    for (let i = 0; i < numEducationEntries; i++) {
+      const value = sessionStorage.getItem(`title_${i}`);
+      retrievedTitleValues.push(value || null);
+    }
+    setTitleValues(retrievedTitleValues);
+
+    const retrievedDurationJobValues = [];
+    for (let i = 0; i < numEducationEntries; i++) {
+      const value = sessionStorage.getItem(`job_duration_${i}`);
+      retrievedDurationJobValues.push(value || null);
+    }
+    setDurationValuesJob(retrievedDurationJobValues);
+
+    const retrievedJobLocationValues = [];
+    for (let i = 0; i < numEducationEntries; i++) {
+      const value = sessionStorage.getItem(`job_location_${i}`);
+      retrievedJobLocationValues.push(value || null);
+    }
+    setJobLocationValues(retrievedJobLocationValues);
+
+    const retrievedCompanySizeValues = [];
+    for (let i = 0; i < numEducationEntries; i++) {
+      const value = sessionStorage.getItem(`companySize_${i}`);
+      retrievedCompanySizeValues.push(value || null);
+    }
+    setCompanySizeValues(retrievedCompanySizeValues);
+
+    const retrievedSectorValues = [];
+    for (let i = 0; i < numEducationEntries; i++) {
+      const value = sessionStorage.getItem(`industrySector_${i}`);
+      retrievedSectorValues.push(value || null);
+    }
+    setSectorValues(retrievedSectorValues);
+
+    // Similarly, retrieve and populate other values from sessionStorage
+
+    // eslint-disable-next-line
   }, []);
+
+  // useEffect(() => {
+  //   AxiosInstance.get("/api/linkedin/data")
+  //     .then(async (response) => {
+  //       const resultData = await response.data;
+
+  //       console.log(JSON.stringify(resultData));
+  //       // setDataLinkedIn(resultData);
+  //     })
+  //     .catch((err) => console.log("error", err));
+  // }, []);
 
   useEffect(() => {
     setDataResults(null);
@@ -121,6 +202,8 @@ const App = () => {
       setInstituteValues((prevValues) => {
         const updatedValues = [...prevValues];
         updatedValues[index] = e.target.value;
+        sessionStorage.setItem(`institute_${index}`, e.target.value);
+
         return updatedValues;
       });
     }
@@ -128,6 +211,8 @@ const App = () => {
       setDegreeValues((prevValues) => {
         const updatedValues = [...prevValues];
         updatedValues[index] = e.target.value;
+        sessionStorage.setItem(`degree_${index}`, e.target.value);
+
         return updatedValues;
       });
     }
@@ -135,6 +220,8 @@ const App = () => {
       setDurationValues((prevValues) => {
         const updatedValues = [...prevValues];
         updatedValues[index] = e.target.value;
+        sessionStorage.setItem(`degree_duration_${index}`, e.target.value);
+
         return updatedValues;
       });
     }
@@ -162,6 +249,7 @@ const App = () => {
       setExperienceValues((prevValues) => {
         const updatedValues = [...prevValues];
         updatedValues[index] = e.target.value;
+        sessionStorage.setItem(`experience_${index}`, e.target.value);
         return updatedValues;
       });
     }
@@ -169,6 +257,7 @@ const App = () => {
       setOrganizationValues((prevValues) => {
         const updatedValues = [...prevValues];
         updatedValues[index] = e.target.value;
+        sessionStorage.setItem(`organization_${index}`, e.target.value);
         return updatedValues;
       });
     }
@@ -176,6 +265,8 @@ const App = () => {
       setTitleValues((prevValues) => {
         const updatedValues = [...prevValues];
         updatedValues[index] = e.target.value;
+        sessionStorage.setItem(`title_${index}`, e.target.value);
+
         return updatedValues;
       });
     }
@@ -184,6 +275,8 @@ const App = () => {
       setDurationValuesJob((prevValues) => {
         const updatedValues = [...prevValues];
         updatedValues[index] = e.target.value;
+        sessionStorage.setItem(`job_duration_${index}`, e.target.value);
+
         return updatedValues;
       });
     }
@@ -191,6 +284,8 @@ const App = () => {
       setJobLocationValues((prevValues) => {
         const updatedValues = [...prevValues];
         updatedValues[index] = e.target.value;
+        sessionStorage.setItem(`job_location_${index}`, e.target.value);
+
         return updatedValues;
       });
     }
@@ -199,6 +294,8 @@ const App = () => {
       setCompanySizeValues((prevValues) => {
         const updatedValues = [...prevValues];
         updatedValues[index] = e.target.value;
+        sessionStorage.setItem(`companySize_${index}`, e.target.value);
+
         return updatedValues;
       });
     }
@@ -207,6 +304,8 @@ const App = () => {
       setSectorValues((prevValues) => {
         const updatedValues = [...prevValues];
         updatedValues[index] = e.target.value;
+        sessionStorage.setItem(`industrySector_${index}`, e.target.value);
+
         return updatedValues;
       });
     }
@@ -307,40 +406,35 @@ const App = () => {
         [fieldName]: matchPercentage,
       };
 
+      sessionStorage.setItem(
+        "job_match_percentage",
+        JSON.stringify(previousJobMatchPercentages)
+      );
+
       return updatedMatchPercentages;
     });
   };
 
   const handleEducationEntryBlur = (sectionIndex, fieldName, value) => {
     const LoweredValue = value.toLowerCase();
-    console.log(
-      "🚀 ~ file: index.js:290 ~ handleEducationEntryBlur ~ LoweredValue:",
-      LoweredValue
-    );
+
     const profileField = mapFormFieldToProfileField(fieldName); // Implement this mapping
-    console.log(
-      "🚀 ~ file: index.js:292 ~ handleEducationEntryBlur ~ profileField:",
-      profileField
-    );
 
     const matchPercentage = calculateMatchPercentage(
       linkedinDataNew,
       profileField,
       LoweredValue
     );
-    console.log(
-      "🚀 ~ file: index.js:299 ~ handleEducationEntryBlur ~ matchPercentage:",
-      matchPercentage
-    );
+
     setEducationMatchPercentages((prevMatchPercentages) => {
       const updatedMatchPercentages = [...prevMatchPercentages];
       updatedMatchPercentages[sectionIndex] = {
         ...updatedMatchPercentages[sectionIndex],
         [fieldName]: matchPercentage,
       };
-      console.log(
-        "🚀 ~ file: index.js:307 ~ setEducationMatchPercentages ~ updatedMatchPercentages:",
-        updatedMatchPercentages
+      sessionStorage.setItem(
+        "education_match_percentage",
+        JSON.stringify(educationMatchPercentages)
       );
       return updatedMatchPercentages;
     });
@@ -402,6 +496,8 @@ const App = () => {
     setActivePanels(activeKey);
   };
 
+  console.log("check-1", instituteValues);
+
   const renderEducationSection = () => {
     const educationSections = [];
 
@@ -425,6 +521,7 @@ const App = () => {
                 name={`institute`}
                 onBlur={(e) => handleEducationEntryChange(i, e)}
                 placeholder="Institute"
+                value={instituteValues[i] || null}
               />
               <div
                 style={{
@@ -450,6 +547,7 @@ const App = () => {
                 name={`degree`}
                 onChange={(e) => handleEducationEntryChange(i, e)}
                 placeholder="Degree"
+                value={degreeValues[i] || null}
               >
                 <option style={{ color: "#51596c" }}>Degree</option>
                 {i === 0
@@ -489,6 +587,7 @@ const App = () => {
                 name={`degree_duration`}
                 onChange={(e) => handleEducationEntryChange(i, e)}
                 placeholder="Degree Duration"
+                value={durationValues[i] || null}
               >
                 <option value={0}>Duration</option>
                 {degreeDurationOptions.map((data) => (
@@ -524,7 +623,7 @@ const App = () => {
     const previousJobSections = [];
     for (let i = 0; i < numPreviousJobs; i++) {
       // Render input fields for the first two previous jobs
-      const sectionMatchPercentages = PreviousJobMatchPercentages[i] || {}; // Default to empty object if not available
+      const sectionMatchPercentages = previousJobMatchPercentages[i] || {}; // Default to empty object if not available
       previousJobSections.push(
         <Panel
           class="card card-lg card-bordered shadow-none"
@@ -539,10 +638,7 @@ const App = () => {
           <div>
             {/* <h4>Previous Job {i + 1}</h4> */}
             <div className="d-lg-flex align-items-center justify-content-center   flex-wrap">
-              <div
-                className="mb-3 col-lg-2 col-12 text-start"
-                style={{ width: "180px" }}
-              >
+              <div className="mb-3 col-lg-2 col-12 text-start input-container">
                 <select
                   type="text"
                   className="form-control"
@@ -551,6 +647,7 @@ const App = () => {
                   name={`experience`}
                   placeholder="Experience"
                   // onBlur={(e) => handlePreviousJobChange(i, e)}
+                  value={experienceValues[i] || null}
                 >
                   <option value={0}>Experience</option>
                   <option value="fresher">Fresher</option>
@@ -577,10 +674,7 @@ const App = () => {
                   />
                 </div>
               </div>
-              <div
-                className="mb-3 col-lg-2 col-12 text-start  "
-                style={{ width: "180px" }}
-              >
+              <div className="mb-3 col-lg-2 col-12 text-start input-container">
                 <input
                   required
                   type="text"
@@ -589,6 +683,7 @@ const App = () => {
                   name={`organization`}
                   onBlur={(e) => handlePreviousJobChange(i, e)}
                   placeholder="organization"
+                  value={organizationValues[i] || null}
                 />
                 <div
                   style={{
@@ -606,10 +701,7 @@ const App = () => {
                   />
                 </div>
               </div>
-              <div
-                className="mb-3 col-lg-2 col-12 text-start"
-                style={{ width: "180px" }}
-              >
+              <div className="mb-3 col-lg-2 col-12 text-start input-container">
                 <input
                   required
                   type="text"
@@ -618,6 +710,7 @@ const App = () => {
                   name={`title`}
                   onBlur={(e) => handlePreviousJobChange(i, e)}
                   placeholder="Title"
+                  value={titleValues[i] || null}
                 />
                 <div
                   style={{
@@ -635,10 +728,7 @@ const App = () => {
                   />
                 </div>
               </div>
-              <div
-                className="mb-3 col-lg-2 col-12 text-start"
-                style={{ width: "180px" }}
-              >
+              <div className="mb-3 col-lg-2 col-12 text-start input-container">
                 <select
                   style={{ padding: "5px 27px", color: "#51596c" }}
                   required
@@ -648,6 +738,7 @@ const App = () => {
                   name={`duration`}
                   onChange={(e) => handlePreviousJobChange(i, e)}
                   placeholder="Duration in months"
+                  value={durationValuesJob[i] || null}
                 >
                   <option value={0}>Duration</option>
                   {jobDurationOptions.map((data) => (
@@ -670,10 +761,7 @@ const App = () => {
                   />
                 </div>
               </div>
-              <div
-                className="mb-3 col-lg-2 col-12 text-start"
-                style={{ width: "180px" }}
-              >
+              <div className="mb-3 col-lg-2 col-12 text-start input-container">
                 <input
                   required
                   type="text"
@@ -682,6 +770,7 @@ const App = () => {
                   name={`job_location`}
                   onBlur={(e) => handlePreviousJobChange(i, e)}
                   placeholder="Job location"
+                  value={jobLocationValues[i] || null}
                 />
                 <div
                   style={{
@@ -700,16 +789,14 @@ const App = () => {
                 </div>
               </div>
 
-              <div
-                className="mb-3 col-lg-2 col-12 text-start  "
-                style={{ width: "180px" }}
-              >
+              <div className="mb-3 col-lg-2 col-12 text-start input-container">
                 <select
                   id="companySize"
                   name="companySize"
                   className="form-control"
                   style={{ padding: "5px 27px", color: "#51596c" }}
                   // onBlur={(e) => handlePreviousJobChange(i, e)}
+                  value={companySizeValues[i] || null}
                 >
                   <option>Company size</option>
                   <option value="1">Freelancer / Solo Entrepreneur</option>
@@ -734,16 +821,14 @@ const App = () => {
                   />
                 </div>
               </div>
-              <div
-                className="mb-3 col-lg-2 col-12 text-start"
-                style={{ width: "180px" }}
-              >
+              <div className="mb-3 col-lg-2 col-12 text-start input-container">
                 <select
                   id="industrySector"
                   name="industrySector"
                   className="form-control"
                   style={{ padding: "5px 27px", color: "#51596c" }}
                   onChange={(e) => handlePreviousJobChange(i, e)}
+                  value={sectorValues[i] || null}
                 >
                   <option>Industry/Sector</option>
                   <option value="it">Information Technology</option>
